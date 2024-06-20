@@ -1,4 +1,4 @@
-import { test, expect } from "@jest/globals";
+import { test, expect, jest } from "@jest/globals";
 import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
 
@@ -15,6 +15,8 @@ test("create gameboard", () => {
     "0,0": null,
   });
 });
+
+// slight integration testing
 
 test("place a ship", () => {
   let ship = new Ship(2);
@@ -47,3 +49,20 @@ test("allow placing a ship beside another", () => {
   gameboard.placeShip(0, 0, firstShip);
   expect(gameboard.placeShip(0, 2, secondShip)).toBe(true);
 });
+
+// start using mocks for Ship class
+const mockShip = jest.fn().mockImplementation((num) => {
+  return { length: num };
+});
+
+test("create mock ship", () => {
+  let ship = new mockShip(2);
+  expect(ship).toEqual({ length: 2 });
+});
+
+test("check proper value passed to mock ship", () => {
+  let ship = new mockShip(2);
+  expect(mockShip).toHaveBeenCalledWith(2);
+});
+
+// now continue testing gameboard but with mockShip
