@@ -1,5 +1,5 @@
 import { Player } from "./player";
-import { test, expect, jest } from "@jest/globals";
+import { test, expect } from "@jest/globals";
 
 test("create a player", () => {
   expect(new Player("ai", false, 2)).toBeTruthy;
