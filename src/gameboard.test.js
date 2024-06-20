@@ -66,3 +66,10 @@ test("check proper value passed to mock ship", () => {
 });
 
 // now continue testing gameboard but with mockShip
+test("create mock ship and place it", () => {
+  let ship = new mockShip(2);
+  let gameboard = new Gameboard(3);
+  gameboard.placeShip(0, 0, ship);
+  expect(gameboard.board["0,0"]).toEqual(ship);
+  expect(gameboard.board["0,1"]).toEqual(ship);
+});
