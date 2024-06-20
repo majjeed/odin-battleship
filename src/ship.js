@@ -49,8 +49,23 @@ class Ship {
     this._hits = value;
   }
 
+  set sunk(value) {
+    this._sunk = value;
+  }
+
+  get sunk() {
+    return this._sunk;
+  }
+
   hit() {
     this.hits += 1;
+  }
+
+  isSunk() {
+    if (this.hits === this.length) {
+      this.sunk = true;
+    }
+    return this.sunk;
   }
 }
 
