@@ -100,3 +100,30 @@ test("miss two shots", () => {
   gameboard.receiveAttack(2, 2);
   expect(gameboard.missedShots.length).toBe(2);
 });
+
+test("hit ship twice and check if sunk", () => {
+  let ship = new Ship(5);
+  let gameboard = new Gameboard(3);
+  gameboard.placeShip(0, 0, ship);
+  gameboard.receiveAttack(0, 0);
+  gameboard.receiveAttack(0, 1);
+  expect(ship.hits).toBe(2);
+  expect(ship.isSunk()).toBe(true);
+});
+
+test("fake console.log", () => {
+  let ship1 = new Ship(5);
+  let ship2 = new Ship(5);
+
+  let gameboard = new Gameboard(3);
+  gameboard.placeShip(0, 0, ship1);
+  gameboard.placeShip(2, 0, ship2);
+
+  gameboard.receiveAttack(0, 0);
+  gameboard.receiveAttack(0, 1);
+
+  gameboard.receiveAttack(2, 0);
+  gameboard.receiveAttack(2, 1);
+
+  expect(gameboard.allShipsSunk()).toBe(true);
+});

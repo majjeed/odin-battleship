@@ -5,6 +5,7 @@ class Gameboard {
     this.size = size;
     this.board = {};
     this.missedShots = [];
+    this.ships = new Set();
     for (let row = 0; row < size; row++) {
       for (let col = 0; col < size; col++) {
         this.board[`${row},${col}`] = null;
@@ -48,6 +49,7 @@ class Gameboard {
           this.board[`${row},${col + length}`] = ship;
         }
       }
+      this.ships.add(ship);
       return true;
     } else {
       return false;
@@ -69,6 +71,15 @@ class Gameboard {
       this.missedShots.push(positionKey);
       return false;
     }
+  }
+
+  allShipsSunk() {
+    for (let ship of this.ships) {
+      if (!ship.isSunk()) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
