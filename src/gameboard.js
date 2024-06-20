@@ -10,10 +10,19 @@ class Gameboard {
   }
 
   placeShip(row, col, ship) {
+    let isOccupied = false;
     for (let length = 0; length < ship.length; length++) {
-      this.board[`${row},${col + length}`] = ship;
+      // was just supposed to check if the square is empty but accidentally also checks that the ship placed is not out of bounds
+      if (this.board[`${row},${col + length}`] !== null) {
+        isOccupied = true;
+      }
     }
-    return true;
+    if (!isOccupied) {
+      for (let length = 0; length < ship.length; length++) {
+        this.board[`${row},${col + length}`] = ship;
+      }
+      return true;
+    } else return false;
   }
 }
 

@@ -18,7 +18,7 @@ test("create gameboard", () => {
 
 test("place a ship", () => {
   let ship = new Ship(2);
-  let gameboard = new Gameboard(3);
+  let gameboard = new Gameboard(5);
   expect(gameboard.placeShip(0, 0, ship)).toBe(true);
 });
 
@@ -28,4 +28,22 @@ test("check if placed ship occupies the right coordinates", () => {
   gameboard.placeShip(0, 0, ship);
   expect(gameboard.board["0,0"]).toEqual(ship);
   expect(gameboard.board["0,1"]).toEqual(ship);
+});
+
+test("don't allow placing a ship on top of another", () => {
+  let firstShip = new Ship(5);
+  let secondShip = new Ship(4);
+  let gameboard = new Gameboard(3);
+
+  gameboard.placeShip(0, 0, firstShip);
+  expect(gameboard.placeShip(0, 0, secondShip)).toBe(false);
+});
+
+test("allow placing a ship beside another", () => {
+  let firstShip = new Ship(5);
+  let secondShip = new Ship(4);
+  let gameboard = new Gameboard(10);
+
+  gameboard.placeShip(0, 0, firstShip);
+  expect(gameboard.placeShip(0, 2, secondShip)).toBe(true);
 });
