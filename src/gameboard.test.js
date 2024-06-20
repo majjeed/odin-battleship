@@ -16,7 +16,7 @@ test("create gameboard", () => {
   });
 });
 
-// slight integration testing
+//slight integration testing
 
 test("place a ship", () => {
   let ship = new Ship(2);
@@ -50,7 +50,7 @@ test("allow placing a ship beside another", () => {
   expect(gameboard.placeShip(0, 2, secondShip)).toBe(true);
 });
 
-// start using mocks for Ship class
+//start using mocks for Ship class
 const mockShip = jest.fn().mockImplementation((num) => {
   return { length: num };
 });
@@ -65,11 +65,19 @@ test("check proper value passed to mock ship", () => {
   expect(mockShip).toHaveBeenCalledWith(2);
 });
 
-// now continue testing gameboard but with mockShip
+//now continue testing gameboard but with mockShip
 test("create mock ship and place it", () => {
   let ship = new mockShip(2);
   let gameboard = new Gameboard(3);
   gameboard.placeShip(0, 0, ship);
   expect(gameboard.board["0,0"]).toEqual(ship);
   expect(gameboard.board["0,1"]).toEqual(ship);
+});
+
+test("place mock ship vertically", () => {
+  let ship = new mockShip(2);
+  let gameboard = new Gameboard(3);
+  gameboard.placeShip(0, 0, ship, true);
+  expect(gameboard.board["0,0"]).toEqual(ship);
+  expect(gameboard.board["1,0"]).toEqual(ship);
 });
