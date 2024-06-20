@@ -51,6 +51,7 @@ test("allow placing a ship beside another", () => {
 });
 
 //start using mocks for Ship class
+//NOTE: the real implementation of Ship class uses Ship No. not length
 const mockShip = jest.fn().mockImplementation((num) => {
   return { length: num };
 });
@@ -80,4 +81,22 @@ test("place mock ship vertically", () => {
   gameboard.placeShip(0, 0, ship, true);
   expect(gameboard.board["0,0"]).toEqual(ship);
   expect(gameboard.board["1,0"]).toEqual(ship);
+});
+
+test("attack a square", () => {
+  let ship = new Ship(5);
+  let gameboard = new Gameboard(3);
+  gameboard.placeShip(0, 0, ship);
+  expect(gameboard.receiveAttack(0, 0)).toBe(true);
+  expect(gameboard.receiveAttack(0, 1)).toBe(true);
+  expect(gameboard.receiveAttack(0, 3)).toBe(false);
+});
+
+test("miss two shots", () => {
+  let ship = new Ship(5);
+  let gameboard = new Gameboard(3);
+  gameboard.placeShip(0, 0, ship);
+  gameboard.receiveAttack(1, 1);
+  gameboard.receiveAttack(2, 2);
+  expect(gameboard.missedShots.length).toBe(2);
 });

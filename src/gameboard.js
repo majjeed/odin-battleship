@@ -1,7 +1,10 @@
+import { Ship } from "./ship";
+
 class Gameboard {
   constructor(size) {
     this.size = size;
     this.board = {};
+    this.missedShots = [];
     for (let row = 0; row < size; row++) {
       for (let col = 0; col < size; col++) {
         this.board[`${row},${col}`] = null;
@@ -12,35 +15,60 @@ class Gameboard {
   placeShip(row, col, ship, vertical = false) {
     let isOccupied = false;
 
-    //if vertical true then swap row and col positions
-    if (vertical === true) {
+    // Check if the ship fits within the board bounds
+    if (vertical) {
+      if (row + ship.length > this.size) return false;
+    } else {
+      if (col + ship.length > this.size) return false;
+    }
+
+    // Check if the space is already occupied
+    if (vertical) {
       for (let length = 0; length < ship.length; length++) {
-        //was just supposed to check if the square is empty but accidentally also checks that the ship placed is not out of bounds
         if (this.board[`${row + length},${col}`] !== null) {
           isOccupied = true;
         }
       }
-      if (!isOccupied) {
+    } else {
+      for (let length = 0; length < ship.length; length++) {
+        if (this.board[`${row},${col + length}`] !== null) {
+          isOccupied = true;
+        }
+      }
+    }
+
+    // Place the ship if the space is not occupied
+    if (!isOccupied) {
+      if (vertical) {
         for (let length = 0; length < ship.length; length++) {
           this.board[`${row + length},${col}`] = ship;
         }
-        return true;
-      } else return false;
-    }
-
-    //horizontal path
-    for (let length = 0; length < ship.length; length++) {
-      //was just supposed to check if the square is empty but accidentally also checks that the ship placed is not out of bounds
-      if (this.board[`${row},${col + length}`] !== null) {
-        isOccupied = true;
-      }
-    }
-    if (!isOccupied) {
-      for (let length = 0; length < ship.length; length++) {
-        this.board[`${row},${col + length}`] = ship;
+      } else {
+        for (let length = 0; length < ship.length; length++) {
+          this.board[`${row},${col + length}`] = ship;
+        }
       }
       return true;
-    } else return false;
+    } else {
+      return false;
+    }
+  }
+
+  receiveAttack(row, col) {
+    // Check if the attack is out of bounds
+    if (row < 0 || row >= this.size || col < 0 || col >= this.size)
+      return false;
+
+    const positionKey = `${row},${col}`;
+    const ship = this.board[positionKey];
+
+    if (ship !== null) {
+      ship.hit();
+      return true;
+    } else {
+      this.missedShots.push(positionKey);
+      return false;
+    }
   }
 }
 
