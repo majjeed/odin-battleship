@@ -49,12 +49,12 @@ class Ship {
     this._hits = value;
   }
 
-  set sunk(value) {
-    this._sunk = value;
-  }
-
   get sunk() {
     return this._sunk;
+  }
+
+  set sunk(value) {
+    this._sunk = value;
   }
 
   hit() {
