@@ -63,6 +63,7 @@ test("create mock ship", () => {
 
 test("check proper value passed to mock ship", () => {
   let ship = new mockShip(2);
+  ship;
   expect(mockShip).toHaveBeenCalledWith(2);
 });
 

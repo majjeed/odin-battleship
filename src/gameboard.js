@@ -1,5 +1,3 @@
-import { Ship } from "./ship";
-
 class Gameboard {
   constructor(size) {
     this.size = size;
