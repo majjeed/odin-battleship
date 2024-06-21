@@ -12,10 +12,14 @@ const player2 = new Player("Computer", false, 10);
 const carrier1 = new Ship(1);
 const battlership1 = new Ship(2);
 const destroyer1 = new Ship(3);
+const submarine1 = new Ship(4);
+const patrolBoat1 = new Ship(5);
 
 const carrier2 = new Ship(1);
 const battleship2 = new Ship(2);
 const destroyer2 = new Ship(3);
+const submarine2 = new Ship(4);
+const patrolBoat2 = new Ship(5);
 
 player1.gameboard.placeShip(0, 0, carrier1, false);
 player1.gameboard.placeShip(2, 2, battlership1, true);

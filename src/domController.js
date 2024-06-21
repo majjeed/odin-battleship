@@ -8,6 +8,7 @@ class DOMController {
     this.player1 = player1;
     this.player2 = player2;
     this.currentPlayer = player1;
+    this.gameOver = false; // Add a flag to track if the game is over
     this.initializeGame();
   }
 
@@ -62,6 +63,8 @@ class DOMController {
   handleAttack(event) {
     event.preventDefault(); // Prevent any default behavior that might cause layout shifts
 
+    if (this.gameOver) return; // Check if the game is over
+
     const row = event.target.dataset.row;
     const col = event.target.dataset.col;
 
@@ -88,6 +91,7 @@ class DOMController {
 
     if (this.player2.gameboard.allShipsSunk()) {
       alert(`${this.player1.name} wins!`);
+      this.gameOver = true; // Set the game over flag
       return;
     }
 
@@ -96,6 +100,8 @@ class DOMController {
   }
 
   computerAttack() {
+    if (this.gameOver) return; // Check if the game is over
+
     let row, col, positionKey;
     do {
       row = Math.floor(Math.random() * this.player1.gameboard.size);
@@ -111,6 +117,7 @@ class DOMController {
 
     if (this.player1.gameboard.allShipsSunk()) {
       alert(`${this.player2.name} wins!`);
+      this.gameOver = true; // Set the game over flag
       return;
     }
 
