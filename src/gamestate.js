@@ -1,5 +1,4 @@
 import { Ship } from "./ship.js";
-import { Gameboard } from "./gameboard.js";
 import { Player } from "./player.js";
 
 const humanPlayer = new Player("Alice", true, 10);
@@ -25,23 +24,8 @@ computerPlayer.gameboard.placeShip(2, 2, new Ship(3));
 computerPlayer.gameboard.placeShip(6, 3, new Ship(2), true);
 computerPlayer.gameboard.placeShip(3, 0, new Ship(1), true);
 
-//console.table(humanPlayer._gameboard);
-
-// function printPlayer(player) {
-//   console.log(`Player: ${player.name}`);
-//   console.log(`Type: ${player.type}`);
-//   console.log("Gameboard:");
-//   for (const [key, value] of Object.entries(player.gameboard.board)) {
-//     console.log(
-//       `${key}: ${value ? `Ship of length ${value.length}` : "empty"}`
-//     );
-//   }
-//   console.log("Missed Shots:", player.gameboard.missedShots);
-//   console.log();
-// }
-
-// printPlayer(humanPlayer);
-// printPlayer(computerPlayer);
+computerPlayer.gameboard.receiveAttack(8, 8);
+computerPlayer.gameboard.receiveAttack(3, 8);
 
 // Function to print the gameboard as a 2D grid
 function printGameboard(gameboard) {
