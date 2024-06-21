@@ -10,3 +10,35 @@
   font-family: "MyFont";
   background: url("./icon.jpg");
 }
+/* styles.css */
+.board {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cell.ship {
+  background-color: lightblue; /* Color to indicate a ship's presence */
+}
+
+.cell.hit {
+  background-color: red;
+}
+
+.cell.miss {
+  background-color: gray;
+}

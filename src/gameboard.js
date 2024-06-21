@@ -2,7 +2,8 @@ class Gameboard {
   constructor(size) {
     this.size = size;
     this.board = {};
-    this.missedShots = [];
+    this.missedShots = new Set();
+    this.hits = new Set();
     this.ships = new Set();
     for (let row = 0; row < size; row++) {
       for (let col = 0; col < size; col++) {
@@ -56,17 +57,26 @@ class Gameboard {
 
   receiveAttack(row, col) {
     // Check if the attack is out of bounds
-    if (row < 0 || row >= this.size || col < 0 || col >= this.size)
+    const positionKey = `${row},${col}`;
+
+    if (
+      row < 0 ||
+      row >= this.size ||
+      col < 0 ||
+      col >= this.size ||
+      this.hits.has(positionKey) ||
+      this.missedShots.has(positionKey)
+    )
       return false;
 
-    const positionKey = `${row},${col}`;
     const ship = this.board[positionKey];
 
     if (ship !== null) {
+      this.hits.add(positionKey);
       ship.hit();
       return true;
     } else {
-      this.missedShots.push(positionKey);
+      this.missedShots.add(positionKey);
       return false;
     }
   }
