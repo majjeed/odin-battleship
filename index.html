@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Development</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script defer src="runtime.bundle.js"></script><script defer src="index.bundle.js"></script><script defer src="print.bundle.js"></script></head>
+  <body>
+    <div id="orientation-toggle">
+      <label>
+        <input type="radio" name="orientation" value="horizontal" checked />
+        Horizontal
+      </label>
+      <label>
+        <input type="radio" name="orientation" value="vertical" /> Vertical
+      </label>
+    </div>
+
+    <div id="ships">
+      <div id="carrier" class="placeableShip" draggable="true" data-length="5">
+        Carrier
+      </div>
+      <div
+        id="battleship"
+        class="placeableShip"
+        draggable="true"
+        data-length="4"
+      >
+        Battleship
+      </div>
+      <div
+        id="destroyer"
+        class="placeableShip"
+        draggable="true"
+        data-length="3"
+      >
+        Destroyer
+      </div>
+      <div
+        id="submarine"
+        class="placeableShip"
+        draggable="true"
+        data-length="3"
+      >
+        Submarine
+      </div>
+      <div
+        id="patrolBoat"
+        class="placeableShip"
+        draggable="true"
+        data-length="2"
+      >
+        Patrol Boat
+      </div>
+    </div>
+    <div id="game">
+      <div id="player1-board" class="board"></div>
+      <div id="player2-board" class="board"></div>
+    </div>
+    <button id="restart-button">Restart Game</button>
+  </body>
+</html>
