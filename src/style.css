@@ -42,3 +42,11 @@
 .cell.miss {
   background-color: gray;
 }
+
+.cell:hover:not(.hit, .miss) {
+  background-color: rgba(128, 128, 128, 0.253);
+}
+
+.cell:active {
+  scale: 1.1;
+}

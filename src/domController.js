@@ -58,6 +58,9 @@ class DOMController {
   addEventListeners() {
     const player2Board = document.getElementById("player2-board");
     player2Board.addEventListener("click", this.handleAttack.bind(this));
+
+    const restartButton = document.getElementById("restart-button");
+    restartButton.addEventListener("click", this.restartGame.bind(this));
   }
 
   handleAttack(event) {
@@ -128,6 +131,33 @@ class DOMController {
     const board = document.getElementById(boardId);
     const cell = board.querySelector(`[data-row="${row}"][data-col="${col}"]`);
     cell.className = hit ? "cell hit" : "cell miss";
+  }
+
+  restartGame() {
+    // Reset game state
+    this.player1.gameboard = new Gameboard(this.player1.gameboard.size);
+    this.player2.gameboard = new Gameboard(this.player2.gameboard.size);
+
+    // Reset ships
+    // Here you should reinitialize the ships for each player
+    // Assuming you have a function to place ships, call it here
+    this.placeShips(this.player1);
+    this.placeShips(this.player2);
+
+    this.currentPlayer = this.player1;
+    this.gameOver = false;
+
+    // Re-render the boards
+    this.renderBoards();
+  }
+
+  placeShips(player) {
+    // Example ship placements, should be replaced with your actual ship placement logic
+    player.gameboard.placeShip(0, 0, new Ship(1), false);
+    player.gameboard.placeShip(1, 0, new Ship(2), false);
+    player.gameboard.placeShip(2, 0, new Ship(3), false);
+    player.gameboard.placeShip(3, 0, new Ship(4), false);
+    player.gameboard.placeShip(4, 0, new Ship(5), false);
   }
 }
 
