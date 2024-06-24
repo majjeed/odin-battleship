@@ -1,3 +1,4 @@
+/* styles.css */
 @font-face {
   font-family: "MyFont";
   src: url("./Roboto-BlackItalic.ttf") format("truetype");
@@ -10,7 +11,7 @@
   font-family: "MyFont";
   background: url("./icon.jpg");
 }
-/* styles.css */
+
 .board {
   display: flex;
   flex-direction: column;

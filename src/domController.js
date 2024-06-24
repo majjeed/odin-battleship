@@ -9,6 +9,8 @@ class DOMController {
     this.player2 = player2;
     this.currentPlayer = player1;
     this.gameOver = false;
+    this.shipsPlaced = 0;
+    this.totalShips = 5; // Total number of ships to place for each player
     this.initializeGame();
   }
 
@@ -16,6 +18,7 @@ class DOMController {
     this.renderBoards();
     this.addEventListeners();
     this.setupDragAndDrop();
+    this.placeComputerShips();
   }
 
   renderBoards() {
@@ -66,7 +69,7 @@ class DOMController {
 
   handleAttack(event) {
     event.preventDefault();
-    if (this.gameOver) return;
+    if (this.gameOver || this.shipsPlaced < this.totalShips) return; // Only allow attacks after all ships are placed
 
     const row = event.target.dataset.row;
     const col = event.target.dataset.col;
@@ -138,8 +141,10 @@ class DOMController {
 
     this.currentPlayer = this.player1;
     this.gameOver = false;
+    this.shipsPlaced = 0;
 
     this.renderBoards();
+    this.placeComputerShips();
   }
 
   setupDragAndDrop() {
@@ -187,9 +192,39 @@ class DOMController {
     if (this.player1.gameboard.placeShip(row, col, ship, false)) {
       this.renderBoard(this.player1, "player1-board", true);
       shipElement.remove();
+      this.shipsPlaced++;
+
+      if (this.shipsPlaced === this.totalShips) {
+        this.startGame();
+      }
     } else {
       alert("Invalid placement");
     }
+  }
+
+  placeComputerShips() {
+    const ships = [
+      new Ship(1),
+      new Ship(2),
+      new Ship(3),
+      new Ship(4),
+      new Ship(5),
+    ];
+
+    ships.forEach((ship) => {
+      let placed = false;
+      while (!placed) {
+        const row = Math.floor(Math.random() * this.player2.gameboard.size);
+        const col = Math.floor(Math.random() * this.player2.gameboard.size);
+        const horizontal = Math.random() < 0.5;
+        placed = this.player2.gameboard.placeShip(row, col, ship, horizontal);
+      }
+    });
+  }
+
+  startGame() {
+    alert("All ships placed. The game begins!");
+    // Any additional logic to start the game can be placed here
   }
 }
 
