@@ -11,6 +11,7 @@ class DOMController {
     this.gameOver = false;
     this.shipsPlaced = 0;
     this.totalShips = 5; // Total number of ships to place for each player
+    this.currentOrientation = "horizontal"; // Default to horizontal
     this.initializeGame();
   }
 
@@ -20,6 +21,14 @@ class DOMController {
     this.addEventListeners();
     this.setupDragAndDrop();
     this.placeComputerShips();
+    this.setupOrientationToggle();
+  }
+
+  setupOrientationToggle() {
+    const orientationToggle = document.getElementById("orientation-toggle");
+    orientationToggle.addEventListener("change", (event) => {
+      this.currentOrientation = event.target.value;
+    });
   }
 
   renderBoards() {
@@ -213,7 +222,10 @@ class DOMController {
     }
     const ship = new Ship(num);
 
-    if (this.player1.gameboard.placeShip(row, col, ship, false)) {
+    // Check current orientation
+    const horizontal = this.currentOrientation === "horizontal";
+
+    if (this.player1.gameboard.placeShip(row, col, ship, !horizontal)) {
       this.renderBoard(this.player1, "player1-board", true);
       shipElement.remove();
       this.shipsPlaced++;
