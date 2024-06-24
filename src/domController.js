@@ -168,9 +168,7 @@ class DOMController {
     this.gameOver = false;
     this.shipsPlaced = 0;
 
-    this.renderBoards();
-    this.renderShips(); // Re-render ships after clearing
-    this.placeComputerShips();
+    this.initializeGame();
   }
 
   setupDragAndDrop() {
