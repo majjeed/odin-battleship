@@ -50,3 +50,12 @@
 .cell:active {
   scale: 1.1;
 }
+
+.placeableShip {
+  cursor: grab;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #000;
+  display: inline-block;
+  background-color: lightgray;
+}

@@ -8,13 +8,14 @@ class DOMController {
     this.player1 = player1;
     this.player2 = player2;
     this.currentPlayer = player1;
-    this.gameOver = false; // Add a flag to track if the game is over
+    this.gameOver = false;
     this.initializeGame();
   }
 
   initializeGame() {
     this.renderBoards();
     this.addEventListeners();
+    this.setupDragAndDrop();
   }
 
   renderBoards() {
@@ -24,7 +25,7 @@ class DOMController {
 
   renderBoard(player, boardId, showShips) {
     const board = document.getElementById(boardId);
-    board.innerHTML = ""; // Clear the board
+    board.innerHTML = "";
 
     for (let row = 0; row < player.gameboard.size; row++) {
       const rowDiv = document.createElement("div");
@@ -64,23 +65,21 @@ class DOMController {
   }
 
   handleAttack(event) {
-    event.preventDefault(); // Prevent any default behavior that might cause layout shifts
-
-    if (this.gameOver) return; // Check if the game is over
+    event.preventDefault();
+    if (this.gameOver) return;
 
     const row = event.target.dataset.row;
     const col = event.target.dataset.col;
 
-    if (!row || !col) return; // If click is not on a valid cell
+    if (!row || !col) return;
 
     const positionKey = `${row},${col}`;
 
-    // Check if the cell has already been attacked
     if (
       this.player2.gameboard.hits.has(positionKey) ||
       this.player2.gameboard.missedShots.has(positionKey)
     ) {
-      return; // Do nothing if the cell was already attacked
+      return;
     }
 
     if (this.currentPlayer === this.player1) {
@@ -94,7 +93,7 @@ class DOMController {
 
     if (this.player2.gameboard.allShipsSunk()) {
       alert(`${this.player1.name} wins!`);
-      this.gameOver = true; // Set the game over flag
+      this.gameOver = true;
       return;
     }
 
@@ -103,7 +102,7 @@ class DOMController {
   }
 
   computerAttack() {
-    if (this.gameOver) return; // Check if the game is over
+    if (this.gameOver) return;
 
     let row, col, positionKey;
     do {
@@ -120,7 +119,7 @@ class DOMController {
 
     if (this.player1.gameboard.allShipsSunk()) {
       alert(`${this.player2.name} wins!`);
-      this.gameOver = true; // Set the game over flag
+      this.gameOver = true;
       return;
     }
 
@@ -134,30 +133,63 @@ class DOMController {
   }
 
   restartGame() {
-    // Reset game state
     this.player1.gameboard = new Gameboard(this.player1.gameboard.size);
     this.player2.gameboard = new Gameboard(this.player2.gameboard.size);
-
-    // Reset ships
-    // Here you should reinitialize the ships for each player
-    // Assuming you have a function to place ships, call it here
-    this.placeShips(this.player1);
-    this.placeShips(this.player2);
 
     this.currentPlayer = this.player1;
     this.gameOver = false;
 
-    // Re-render the boards
     this.renderBoards();
   }
 
-  placeShips(player) {
-    // Example ship placements, should be replaced with your actual ship placement logic
-    player.gameboard.placeShip(0, 0, new Ship(1), false);
-    player.gameboard.placeShip(1, 0, new Ship(2), false);
-    player.gameboard.placeShip(2, 0, new Ship(3), false);
-    player.gameboard.placeShip(3, 0, new Ship(4), false);
-    player.gameboard.placeShip(4, 0, new Ship(5), false);
+  setupDragAndDrop() {
+    const ships = document.querySelectorAll(".placeableShip");
+    const board = document.getElementById("player1-board");
+
+    ships.forEach((ship) => {
+      ship.addEventListener("dragstart", this.dragStart);
+    });
+
+    board.addEventListener("dragover", this.dragOver);
+    board.addEventListener("drop", this.drop.bind(this));
+  }
+
+  dragStart(event) {
+    event.dataTransfer.setData("text/plain", event.target.id);
+  }
+
+  dragOver(event) {
+    event.preventDefault();
+  }
+
+  drop(event) {
+    event.preventDefault();
+    const shipId = event.dataTransfer.getData("text/plain");
+    const shipElement = document.getElementById(shipId);
+    const shipLength = parseInt(shipElement.dataset.length);
+    const row = parseInt(event.target.dataset.row);
+    const col = parseInt(event.target.dataset.col);
+
+    let num;
+    if (shipId === "carrier") {
+      num = 1;
+    } else if (shipId === "battleship") {
+      num = 2;
+    } else if (shipId === "destroyer") {
+      num = 3;
+    } else if (shipId === "submarine") {
+      num = 4;
+    } else {
+      num = 5;
+    }
+    const ship = new Ship(num);
+
+    if (this.player1.gameboard.placeShip(row, col, ship, false)) {
+      this.renderBoard(this.player1, "player1-board", true);
+      shipElement.remove();
+    } else {
+      alert("Invalid placement");
+    }
   }
 }
 
