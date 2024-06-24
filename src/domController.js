@@ -16,6 +16,7 @@ class DOMController {
 
   initializeGame() {
     this.renderBoards();
+    this.renderShips(); // Render ships after boards
     this.addEventListeners();
     this.setupDragAndDrop();
     this.placeComputerShips();
@@ -24,6 +25,30 @@ class DOMController {
   renderBoards() {
     this.renderBoard(this.player1, "player1-board", true);
     this.renderBoard(this.player2, "player2-board", false);
+  }
+
+  renderShips() {
+    const shipsContainer = document.getElementById("ships");
+    shipsContainer.innerHTML = ""; // Clear existing ships
+
+    const ships = [
+      { id: "carrier", length: 5, name: "Carrier" },
+      { id: "battleship", length: 4, name: "Battleship" },
+      { id: "destroyer", length: 3, name: "Destroyer" },
+      { id: "submarine", length: 3, name: "Submarine" },
+      { id: "patrolBoat", length: 2, name: "Patrol Boat" },
+    ];
+
+    ships.forEach((ship) => {
+      const shipElement = document.createElement("div");
+      shipElement.id = ship.id;
+      shipElement.className = "placeableShip";
+      shipElement.draggable = true;
+      shipElement.dataset.length = ship.length;
+      shipElement.textContent = ship.name;
+
+      shipsContainer.appendChild(shipElement);
+    });
   }
 
   renderBoard(player, boardId, showShips) {
@@ -144,6 +169,7 @@ class DOMController {
     this.shipsPlaced = 0;
 
     this.renderBoards();
+    this.renderShips(); // Re-render ships after clearing
     this.placeComputerShips();
   }
 
